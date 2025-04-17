@@ -33,8 +33,8 @@ let floor = new THREE.Mesh(
 scene.add(floor);
 
 let bars = [];
-
 let start = 0.4 - (PARTS / 2) * 1.22;
+
 for (let i = 1; i < PARTS + 1; i++) {
     let offset = Math.floor((i - 1) / 4);
     let box = new THREE.Mesh(
@@ -57,7 +57,6 @@ document.addEventListener("click", function () {
     analyzer.connect(context.destination);
     audio.play();
 
-    analyzer.fftSize = PARTS * 2;
     data = new Uint8Array(analyzer.frequencyBinCount);
 });
 
@@ -67,7 +66,13 @@ function render() {
 
     if (data) {
         analyzer.getByteFrequencyData(data);
-        console.log(data);
+        const bands = partitions(data, PARTS);
+
+        for (let i = 0; i < PARTS; i++) {
+            const height = bands[i] / 255 * 20;
+            bars[i].scale.z = bars[i].scale.z * 0.8 + height * 0.2;
+            bars[i].position.z = bars[i].scale.z / 2;
+        }
     }
 }
 render();
