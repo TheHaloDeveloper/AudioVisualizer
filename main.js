@@ -13,7 +13,7 @@ camera.position.set(0, -14, 10);
 camera.up.set(0, 0, 1);
 
 let controls = new THREE.OrbitControls(camera, renderer.domElement);
-controls.enablePan = false;
+// controls.enablePan = false;
 // controls.enableZoom = false;
 
 let loader = new THREE.TextureLoader();
@@ -30,17 +30,14 @@ let floor = new THREE.Mesh(
 );
 scene.add(floor);
 
+let start = 0.4 - (PARTS / 2) * 1.22;
 for (let i = 1; i < PARTS + 1; i++) {
+    let offset = Math.floor((i - 1) / 4);
     let box = new THREE.Mesh(
         new THREE.BoxGeometry(1.15, 1.15, 1.15),
         new THREE.MeshBasicMaterial({color: 0xff0000})
     );
-
-    // if (i % 2 == 0) {
-        box.position.set(0.65 + (1.22 * (i - 1)), 0.65, 1.05);
-    // } else {
-    //     box.position.set(0.65 - (1.2 * (i - 1)), 0.65, 1);
-    // }
+    box.position.set(start + (1.22 * (i - 1) + (0.1 * offset)), 0.65, 1.05);
     
     scene.add(box);
 }
