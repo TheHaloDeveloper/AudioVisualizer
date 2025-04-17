@@ -6,7 +6,7 @@ let renderer = new THREE.WebGLRenderer({antialias: true});
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById("scene").appendChild(renderer.domElement);
-camera.position.set(0, -14, 6);
+camera.position.set(0, -14, 10);
 
 let controls = new THREE.OrbitControls(camera, renderer.domElement);
 
@@ -20,8 +20,8 @@ scene.add(ambient);
 
 let box = new THREE.Mesh(
     new THREE.BoxGeometry(FLOOR_SIZE, FLOOR_SIZE, 1),
-    new THREE.MeshBasicMaterial({color: 0xffffff, map: floorTexture})
-)
+    new THREE.MeshBasicMaterial({color: 0xffffff, map: floorTexture, transparent: true})
+);
 scene.add(box);
 
 function render() {
