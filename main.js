@@ -28,7 +28,7 @@ scene.add(ambient);
 
 let floor = new THREE.Mesh(
     new THREE.BoxGeometry(FLOOR_SIZE, FLOOR_SIZE, 1),
-    new THREE.MeshBasicMaterial({color: 0xffffff, map: floorTexture, transparent: true, opacity: 0.5, fog: true})
+    new THREE.MeshBasicMaterial({color: 0xffffff, map: floorTexture, fog: true})
 );
 scene.add(floor);
 
@@ -49,15 +49,16 @@ for (let i = 1; i < PARTS + 1; i++) {
 
 let data, context, audio, source, analyzer;
 document.addEventListener("click", function () {
-    context = new (window.AudioContext || window.webkitAudioContext)();
-    audio = new Audio("src/audio/apartments.mp3");
-    source = context.createMediaElementSource(audio);
-    analyzer = context.createAnalyser();
-    source.connect(analyzer);
-    analyzer.connect(context.destination);
-    audio.play();
-
-    data = new Uint8Array(analyzer.frequencyBinCount);
+    if (!data) {
+        context = new (window.AudioContext || window.webkitAudioContext)();
+        audio = new Audio("src/audio/apartments.mp3");
+        source = context.createMediaElementSource(audio);
+        analyzer = context.createAnalyser();
+        source.connect(analyzer);
+        analyzer.connect(context.destination);
+        audio.play();
+        data = new Uint8Array(analyzer.frequencyBinCount);
+    }
 });
 
 function render() {
@@ -71,7 +72,7 @@ function render() {
         for (let i = 0; i < PARTS; i++) {
             const height = bands[i] / 255 * 20;
             bars[i].scale.z = bars[i].scale.z * 0.8 + height * 0.2;
-            bars[i].position.z = bars[i].scale.z / 2;
+            bars[i].position.z = 1.1 + (bars[i].scale.z - 1.15) / 2;
         }
     }
 }
