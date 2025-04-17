@@ -1,5 +1,5 @@
 const FLOOR_SIZE = 200;
-const PARTS = 16;
+const PARTS = 32;
 const STARTCOLOR = 0x00ffff;
 const ENDCOLOR = 0xaa00ff;
 
@@ -15,8 +15,8 @@ camera.position.set(0, -27, 17);
 camera.up.set(0, 0, 1);
 
 let controls = new THREE.OrbitControls(camera, renderer.domElement);
-// controls.enablePan = false;
-// controls.enableZoom = false;
+controls.enablePan = false;
+controls.enableZoom = false;
 
 let loader = new THREE.TextureLoader();
 let floorTexture = loader.load("src/images/grid.png");
@@ -27,9 +27,10 @@ let ambient = new THREE.AmbientLight(0xffffff, 1);
 scene.add(ambient);
 
 let floor = new THREE.Mesh(
-    new THREE.BoxGeometry(FLOOR_SIZE, FLOOR_SIZE, 1),
+    new THREE.BoxGeometry(FLOOR_SIZE, FLOOR_SIZE, 10),
     new THREE.MeshBasicMaterial({color: 0xffffff, map: floorTexture, fog: true})
 );
+floor.position.z = -4.5;
 scene.add(floor);
 
 let bars = [];
