@@ -1,17 +1,17 @@
 const FLOOR_SIZE = 200;
 const PARTS = 16;
-const STARTCOLOR = 0xff0000;
-const ENDCOLOR = 0xffff00;
+const STARTCOLOR = 0x00ffff;
+const ENDCOLOR = 0xaa00ff;
 
 let scene = new THREE.Scene();
-scene.fog = new THREE.Fog(0x000000, 20, 60);
+scene.fog = new THREE.Fog(0x000000, 20, 70);
 
 let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 let renderer = new THREE.WebGLRenderer({antialias: true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById("scene").appendChild(renderer.domElement);
 
-camera.position.set(0, -14, 10);
+camera.position.set(0, -27, 17);
 camera.up.set(0, 0, 1);
 
 let controls = new THREE.OrbitControls(camera, renderer.domElement);
