@@ -19,7 +19,7 @@ let controls = new THREE.OrbitControls(camera, renderer.domElement);
 // controls.enableZoom = false;
 
 let loader = new THREE.TextureLoader();
-let floorTexture = loader.load("images/grid.png");
+let floorTexture = loader.load("src/images/grid.png");
 floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
 floorTexture.repeat.set(0.1 * FLOOR_SIZE, 0.1 * FLOOR_SIZE);
 
@@ -47,8 +47,27 @@ for (let i = 1; i < PARTS + 1; i++) {
     bars.push(box);
 }
 
+let data, context, audio, source, analyzer;
+document.addEventListener("click", function () {
+    context = new (window.AudioContext || window.webkitAudioContext)();
+    audio = new Audio("src/audio/apartments.mp3");
+    source = context.createMediaElementSource(audio);
+    analyzer = context.createAnalyser();
+    source.connect(analyzer);
+    analyzer.connect(context.destination);
+    audio.play();
+
+    analyzer.fftSize = PARTS * 2;
+    data = new Uint8Array(analyzer.frequencyBinCount);
+});
+
 function render() {
     requestAnimationFrame(render);
     renderer.render(scene, camera);
+
+    if (data) {
+        analyzer.getByteFrequencyData(data);
+        console.log(data);
+    }
 }
 render();
