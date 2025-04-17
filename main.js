@@ -1,5 +1,7 @@
 const FLOOR_SIZE = 200;
 const PARTS = 16;
+const STARTCOLOR = 0xff0000;
+const ENDCOLOR = 0xffff00;
 
 let scene = new THREE.Scene();
 scene.fog = new THREE.Fog(0x000000, 20, 60);
@@ -30,16 +32,19 @@ let floor = new THREE.Mesh(
 );
 scene.add(floor);
 
+let bars = [];
+
 let start = 0.4 - (PARTS / 2) * 1.22;
 for (let i = 1; i < PARTS + 1; i++) {
     let offset = Math.floor((i - 1) / 4);
     let box = new THREE.Mesh(
         new THREE.BoxGeometry(1.15, 1.15, 1.15),
-        new THREE.MeshBasicMaterial({color: 0xff0000})
+        new THREE.MeshBasicMaterial({color: gradient(PARTS, i)})
     );
+
     box.position.set(start + (1.22 * (i - 1) + (0.1 * offset)), 0.65, 1.05);
-    
     scene.add(box);
+    bars.push(box);
 }
 
 function render() {
