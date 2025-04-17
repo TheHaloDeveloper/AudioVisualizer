@@ -1,4 +1,5 @@
 const FLOOR_SIZE = 200;
+const PARTS = 16;
 
 let scene = new THREE.Scene();
 scene.fog = new THREE.Fog(0x000000, 20, 60);
@@ -13,7 +14,7 @@ camera.up.set(0, 0, 1);
 
 let controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enablePan = false;
-controls.enableZoom = false;
+// controls.enableZoom = false;
 
 let loader = new THREE.TextureLoader();
 let floorTexture = loader.load("images/grid.png");
@@ -23,11 +24,26 @@ floorTexture.repeat.set(0.1 * FLOOR_SIZE, 0.1 * FLOOR_SIZE);
 let ambient = new THREE.AmbientLight(0xffffff, 1);
 scene.add(ambient);
 
-let box = new THREE.Mesh(
+let floor = new THREE.Mesh(
     new THREE.BoxGeometry(FLOOR_SIZE, FLOOR_SIZE, 1),
     new THREE.MeshBasicMaterial({color: 0xffffff, map: floorTexture, transparent: true, opacity: 0.5, fog: true})
 );
-scene.add(box);
+scene.add(floor);
+
+for (let i = 1; i < PARTS + 1; i++) {
+    let box = new THREE.Mesh(
+        new THREE.BoxGeometry(1.15, 1.15, 1.15),
+        new THREE.MeshBasicMaterial({color: 0xff0000})
+    );
+
+    // if (i % 2 == 0) {
+        box.position.set(0.65 + (1.22 * (i - 1)), 0.65, 1.05);
+    // } else {
+    //     box.position.set(0.65 - (1.2 * (i - 1)), 0.65, 1);
+    // }
+    
+    scene.add(box);
+}
 
 function render() {
     requestAnimationFrame(render);
